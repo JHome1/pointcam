@@ -3,7 +3,6 @@
 # Reference: https://github.com/yanx27/Pointnet_Pointnet2_pytorch 
 # ---------------------------------------------------------------
 import sys
-sys.dont_write_bytecode = True 
 import os
 
 import argparse
@@ -377,7 +376,7 @@ def main(args):
                     total_correct_class[l] += np.sum((pred_val == l) & (batch_label == l))
                     total_iou_deno_class[l] += np.sum(((pred_val == l) | (batch_label == l)))
 
-            ########################
+            #####################################################################################################################################################
             # print open-set metrics
             if (epoch+1) % 1 == 0:
                 auroc, aupr, fpr = eval_open_measure(np.array(seg_preds), np.array(targets), args, mask=None)
