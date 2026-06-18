@@ -5,14 +5,16 @@ This repository is for PointCaM introduced in the following paper:
 Jie Hong*, Shi Qiu*, Weihao Li, Saeed Anwar, Mehrtash Harandi, Nick Barnes, Lars Petersson
 ## Paper and Citation
 The paper can be downloaded from [arXiv](https://arxiv.org/abs/2212.02011).  
-If you find our paper/code is useful, please cite:
+If you find our paper/code is useful, you could cite:
 
-        @article{hong2023pointcam,
-          title={PointCaM: Cut-and-Mix for Open-Set Point Cloud Learning},
-          author={Hong, Jie and Qiu, Shi and Li, Weihao and Anwar, Saeed and Harandi, Mehrtash and Barnes, Nick and Petersson, Lars},
-          journal={arXiv preprint arXiv:2212.02011},
-          year={2023}
-        }
+    @article{hong2026pointcam,
+             title={Pointcam: Cut-and-mix for open-set point cloud learning},
+             author={Hong, Jie and Qiu, Shi and Li, Weihao and Anwar, Saeed and Harandi, Mehrtash and Barnes, Nick and Petersson, Lars},
+             journal={Computer Vision and Image Understanding},
+             pages={104814},
+             year={2026},
+             publisher={Elsevier}
+             }
         
 ## Datasets and Environments
 * PointTransformer: \
