@@ -2,8 +2,8 @@
 # Modified from 'Pointnet_Pointnet2_pytorch ' 
 # Reference: https://github.com/yanx27/Pointnet_Pointnet2_pytorch 
 # ---------------------------------------------------------------
-import sys
 import os
+import sys
 
 import argparse
 import datetime
