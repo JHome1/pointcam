@@ -17,13 +17,14 @@ If you find our paper/code is useful, you could cite:
              }
         
 ## Datasets and Environments
-* PointNet/++ \
+* PointNet/++: \
+Download the datasets and set the environments following the project [```Pointnet_Pointnet2_pytorch```](https://github.com/yanx27/Pointnet_Pointnet2_pytorch).
 * PointTransformer: \
 Download the datasets and set the environments following the project [```point-transformer```](https://github.com/POSTECH-CVLab/point-transformer). The experiments are running on 4 NVIDIA GeForce RTX 3090.
 
 ## Running the Code
 ### PointNet/++:
-* Training&Testing \
+* Training&Testing
 ```
 sh job/job_pointcam.sh
 ```
