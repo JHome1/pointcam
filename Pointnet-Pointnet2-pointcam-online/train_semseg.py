@@ -265,7 +265,6 @@ def main(args):
         classifier = classifier.train()
 
         for i, (points, target) in tqdm(enumerate(trainDataLoader), total=len(trainDataLoader), smoothing=0.9):
-
             optimizer.zero_grad()
 
             points = points.data.numpy()
