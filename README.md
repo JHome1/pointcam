@@ -17,11 +17,17 @@ If you find our paper/code is useful, you could cite:
              }
         
 ## Datasets and Environments
+* PointNet/++ \
 * PointTransformer: \
 Download the datasets and set the environments following the project [```point-transformer```](https://github.com/POSTECH-CVLab/point-transformer). The experiments are running on 4 NVIDIA GeForce RTX 3090.
 
 ## Running the Code
-### PointNet/PointNet++
+### PointNet/++:
+* Training&Testing \
+```
+sh job/job_pointcam.sh
+```
+
 ### PointTransformer:
 * Training \
 Name ```exp``` of ```exp_dir``` in ```./tool/train.sh```; \
