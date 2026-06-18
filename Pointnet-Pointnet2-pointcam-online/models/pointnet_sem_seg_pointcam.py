@@ -1,0 +1,98 @@
+# ---------------------------------------------------------------
+# Modified from 'Pointnet_Pointnet2_pytorch ' 
+# Reference: https://github.com/yanx27/Pointnet_Pointnet2_pytorch 
+# ---------------------------------------------------------------
+import torch
+import torch.nn as nn
+import torch.nn.parallel
+import torch.utils.data
+import torch.nn.functional as F
+from pointnet_utils import PointNetEncoder, feature_transform_reguliarzer
+
+
+class get_model(nn.Module):
+    def __init__(self, num_class):
+        super(get_model, self).__init__()
+        self.k = num_class
+        self.feat = PointNetEncoder(global_feat=False, feature_transform=True, channel=9)
+
+        self.conv1 = torch.nn.Conv1d(1088, 512, 1)
+        self.conv2 = torch.nn.Conv1d(512, 256, 1)
+        self.conv3 = torch.nn.Conv1d(256, 128, 1)
+        self.conv4 = torch.nn.Conv1d(128, self.k, 1)
+
+        #####################################
+        self.attentpoint = nn.Conv1d(9, 3, 1)
+
+        self.attent1 = nn.Conv1d(512, 1, 1)
+        self.attent2 = nn.Conv1d(256, 1, 1)
+        self.attent3 = nn.Conv1d(128, 1, 1)
+        self.sigmoid = nn.Sigmoid()
+        #####################################
+
+        self.bn1 = nn.BatchNorm1d(512)
+        self.bn2 = nn.BatchNorm1d(256)
+        self.bn3 = nn.BatchNorm1d(128)
+        
+
+    def forward(self, x):
+        batchsize = x.size()[0]
+        n_pts = x.size()[2]
+
+        #######################
+        W = self.attentpoint(x)
+        W = F.softmax(W, dim=1)
+        w1, w2, w3 = torch.split(W, split_size_or_sections=1, dim=1)
+        w1 = w1.transpose(2,1).contiguous().view(-1)
+        w2 = w2.transpose(2,1).contiguous().view(-1)
+        w3 = w3.transpose(2,1).contiguous().view(-1)
+        ############################################
+
+        x, trans, trans_feat = self.feat(x)
+
+        ###################################
+        x = F.relu(self.bn1(self.conv1(x)))
+        attention1 = self.attent1(x)
+        attention1 = attention1.transpose(2,1).contiguous().view(-1)
+        attention1 = self.sigmoid(attention1)
+
+        x = F.relu(self.bn2(self.conv2(x)))
+        attention2 = self.attent2(x)
+        attention2 = attention2.transpose(2,1).contiguous().view(-1)
+        attention2 = self.sigmoid(attention2)
+
+        x = F.relu(self.bn3(self.conv3(x)))
+        attention3 = self.attent3(x)
+        attention3 = attention3.transpose(2,1).contiguous().view(-1)
+        attention3 = self.sigmoid(attention3)
+
+        x = self.conv4(x)
+        x = x.transpose(2,1).contiguous()
+
+        x_msp = F.softmax(x.view(-1, self.k), dim=-1)
+        x_msp, idx_msp           = torch.max(x_msp, dim=-1)
+        x_maxlogit, idx_maxlogit = torch.max(x.view(-1, self.k), dim=-1) 
+        ################################################################
+
+        x = F.log_softmax(x.view(-1, self.k), dim=-1)
+        x = x.view(batchsize, n_pts, self.k)
+
+        return x, trans_feat, x_msp, idx_msp, x_maxlogit, idx_maxlogit, attention1, attention2, attention3, w1, w2, w3
+
+
+class get_loss(torch.nn.Module):
+    def __init__(self, mat_diff_loss_scale=0.001):
+        super(get_loss, self).__init__()
+        self.mat_diff_loss_scale = mat_diff_loss_scale
+
+    def forward(self, pred, target, trans_feat, weight):
+        loss = F.nll_loss(pred, target, weight = weight)
+        mat_diff_loss = feature_transform_reguliarzer(trans_feat)
+        total_loss = loss + mat_diff_loss * self.mat_diff_loss_scale
+        return total_loss
+
+
+if __name__ == '__main__':
+    model = get_model(13)
+    xyz = torch.rand(12, 3, 2048)
+    (model(xyz))
