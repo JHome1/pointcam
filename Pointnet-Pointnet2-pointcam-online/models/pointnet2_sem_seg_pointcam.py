@@ -44,7 +44,7 @@ class get_model(nn.Module):
         l0_points = xyz
         l0_xyz = xyz[:,:3,:]
 
-        ###############################
+        ####################################################################
         W = self.attentpoint(l0_points)
         W = F.softmax(W, dim=1)
         w1, w2, w3 = torch.split(W, split_size_or_sections=1, dim=1)
