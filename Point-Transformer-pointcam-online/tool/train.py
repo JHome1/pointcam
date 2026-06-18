@@ -2,8 +2,6 @@
 # Modified from 'Point Transformer' 
 # Reference: https://github.com/POSTECH-CVLab/point-transformer
 # -------------------------------------------------------------
-import sys
-sys.dont_write_bytecode = True 
 import os
 
 import time
