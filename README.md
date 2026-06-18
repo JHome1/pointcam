@@ -21,6 +21,7 @@ If you find our paper/code is useful, you could cite:
 Download the datasets and set the environments following the project [```point-transformer```](https://github.com/POSTECH-CVLab/point-transformer). The experiments are running on 4 NVIDIA GeForce RTX 3090.
 
 ## Running the Code
+### PointNet/PointNet++
 ### PointTransformer:
 * Training \
 Name ```exp``` of ```exp_dir``` in ```./tool/train.sh```; \
