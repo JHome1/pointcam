@@ -39,7 +39,7 @@ class get_model(nn.Module):
         batchsize = x.size()[0]
         n_pts = x.size()[2]
 
-        #######################
+        ############################################
         W = self.attentpoint(x)
         W = F.softmax(W, dim=1)
         w1, w2, w3 = torch.split(W, split_size_or_sections=1, dim=1)
@@ -50,7 +50,7 @@ class get_model(nn.Module):
 
         x, trans, trans_feat = self.feat(x)
 
-        ###################################
+        ################################################################
         x = F.relu(self.bn1(self.conv1(x)))
         attention1 = self.attent1(x)
         attention1 = attention1.transpose(2,1).contiguous().view(-1)
